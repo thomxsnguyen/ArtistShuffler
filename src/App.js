@@ -1,25 +1,52 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from "react";
 
-function App() {
+import "./App.css";
+import spotifyIcon from "./images/Spotify_icon.svg";
+
+const Header = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <header className={`header-container ${isVisible ? "visible" : ""}`}>
+      <div className="left-header-container">
+        <img className="spotify-icon" src={spotifyIcon} alt="icon" />
+        <p>ArtistBlender</p>
+      </div>
+      {/* Change to link aftewards */}
+      <p>About</p>
+    </header>
+  );
+};
+
+const ArtistBlender = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  return (
+    <div className={`title-container ${isVisible ? "visible" : ""}`}>
+      <h1 className="artistblender">ArtistBlender</h1>
+      <p className="subtitle">
+        Select your favorite artists and enjoy and their shuffled songs
+      </p>
+      <button className="sign-up">Start listening now!</button>
     </div>
   );
-}
+};
+
+const App = () => {
+  return (
+    <main className="app">
+      <Header />
+      <ArtistBlender />
+    </main>
+  );
+};
 
 export default App;
