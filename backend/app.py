@@ -1,13 +1,15 @@
-import spotipy
 import uvicorn
 import os
 import urllib.parse
 import secrets
+import httpx
 
-from fastapi import FastAPI
-from fastapi.responses import RedirectResponse
+
+from fastapi import FastAPI, Request
+from fastapi.responses import RedirectResponse, JSONResponse, HTMLResponse
 from dotenv import load_dotenv
 from spotipy.oauth2 import SpotifyOAuth
+from utils import token_utils
 
 
 #uvicorn main:app --reload
@@ -33,6 +35,37 @@ async def home():
   params = {'response_type': 'code', 'client_id':SPOTIFY_CLIENT_ID, 'scope': SCOPE, 'redirect_uri': REDIRECT_URI, 'state': state}
   url = 'https://accounts.spotify.com/authorize?' + urllib.parse.urlencode(params)
   return RedirectResponse(url=url)
+
+@app.get('/callback')
+async def callback(request: Request):
+  code = request.query_params.get('code')
+  state = request.query_params.get('state')
+  
+  if not state:
+    return JSONResponse(content={'error': 'state_mismatch'}, status_code=400)
+  else:
+    async with httpx.AsyncClient() as client:
+      response = await client.post(
+        "https://accounts.spotify.com/api/token"
+      ,data={'code':code,
+            'redirect_uri':REDIRECT_URI, 
+            'grant_type': 'authorization_code'},
+  
+      headers={
+                'Content-Type': 'application/x-www-form-urlencoded',
+                'Authorization': token_utils.get_basic_auth_header(SPOTIFY_CLIENT_ID, SPOTIFY_CLIENT_SECRET)
+              })
+      
+  token_data = response.json()
+  access_token = token_data.get('access_token')
+
+  return RedirectResponse(url=f'http://127.0.0.1:8000/#access_token={access_token}')
+    
+  
+
+  
+
+
 
 if __name__ == "__main__":
   uvicorn.run("app:app", host="127.0.0.1", port=8000, reload=True)
