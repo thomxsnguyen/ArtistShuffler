@@ -30,6 +30,10 @@ sp_oauth = SpotifyOAuth(
 
 @app.get("/")
 async def home():
+  return {'message': 'Backend API is running'}
+
+@app.get('/login')
+async def login(request: Request):
   state = secrets.token_urlsafe(16)
 
   params = {'response_type': 'code', 'client_id':SPOTIFY_CLIENT_ID, 'scope': SCOPE, 'redirect_uri': REDIRECT_URI, 'state': state}
