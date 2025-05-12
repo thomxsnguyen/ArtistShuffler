@@ -84,10 +84,16 @@ const AboutHeader = () => {
 };
 
 const About = () => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
   return (
     <>
       <AboutHeader />
-      <div className="about-page">
+      <div className={`about-page ${isVisible ? "visible" : ""}`}>
         <div className="about-container">
           <div className="about-title">About This Project</div>
           <div className="about-info">

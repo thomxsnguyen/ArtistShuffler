@@ -55,12 +55,14 @@ body {
   height: auto;
 }
 
-.title-container {
+.title-container,
+.about-page {
   opacity: 0;
   transition: opacity 1s ease-in;
 }
 
-.title-container.visible {
+.title-container.visible,
+.about-page.visible {
   display: flex;
   margin-top: 15vh;
   align-items: center;
@@ -112,10 +114,9 @@ body {
   object-fit: cover;
 }
 
-.about-page {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.about-page.visible {
+  margin-top: 0px;
+  height: 40vh;
 }
 
 .about-container {
