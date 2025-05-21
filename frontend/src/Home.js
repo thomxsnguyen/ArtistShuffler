@@ -25,10 +25,19 @@ const Header = () => {
 
 const ArtistBlender = () => {
   const [isVisible, setIsVisible] = useState(false);
+  const [accessToken, setToken] = useState("");
 
   useEffect(() => {
     setIsVisible(true);
   }, []);
+
+  const handleLogin = async () => {
+    try {
+      window.location.href = "http://localhost:8000/login";
+    } catch (error) {
+      console.error("Login redirect failed:", error);
+    }
+  };
 
   return (
     <div className={`title-container ${isVisible ? "visible" : ""}`}>
@@ -36,7 +45,9 @@ const ArtistBlender = () => {
       <p className="subtitle">
         Select your favorite artists and enjoy and their shuffled songs
       </p>
-      <button className="sign-up">Start listening now!</button>
+      <button className="sign-up" onClick={handleLogin}>
+        Start listening now!
+      </button>
     </div>
   );
 };
